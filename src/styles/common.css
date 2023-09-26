@@ -1,0 +1,89 @@
+@font-face {
+  font-family: "archivo";
+  src: url("../fonts/Archivo-VariableFont.ttf");
+}
+html {
+  height: 100%;
+}
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Archivo";
+}
+* {
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  box-sizing: border-box;
+}
+ul,
+li {
+  list-style: none;
+}
+p {
+  margin-bottom: 0;
+}
+a {
+  text-decoration: none;
+}
+.bold{
+  font-weight: bold;
+}
+.font-12 {
+  font-size: 12px;
+}
+.font-13 {
+  font-size: 13px;
+}
+.font-14{
+  font-size: 14px;
+}
+.font-18 {
+  font-size: 18px;
+}
+.font-30 {
+  font-size: 30px;
+}
+.dark-text {
+  color: #5b5a99;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.flex-row,
+.flex-col {
+  display: flex;
+  display: -webkit-flex;
+}
+.flex-row {
+  flex-direction: row;
+  -ms-flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+  -ms-flex-direction: column;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+.items-center {
+  align-items: center;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.space-between {
+  justify-content: space-between;
+}
+.space-around {
+  justify-content: space-around;
+}
+.ant-btn-round {
+  padding: 4px 12px;
+}
