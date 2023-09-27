@@ -52,60 +52,39 @@ export class Gene3ParseProvider {
 
     private initRequestQueue() {
         this._requestQueue.enqueue({
-            apiName: apiName.SLP_TOKEN2,
+            apiName: apiName.STAKES,
             apiDimension: Gen3Dimension.DEFI,
             isDimensionFirst: true,
             isLast: false,
             parseIndex: 1
         });
         this._requestQueue.enqueue({
-            apiName: apiName.MINT,
+            apiName: apiName.NFTS,
             apiDimension: Gen3Dimension.NFT,
             isDimensionFirst: true,
             isLast: false,
             parseIndex: 2
         });
         this._requestQueue.enqueue({
-            apiName: apiName.TOTAL_NFT,
-            apiDimension: Gen3Dimension.NFT,
-            isDimensionFirst: false,
-            isLast: false,
-            parseIndex: 3
-        });
-        this._requestQueue.enqueue({
             apiName: apiName.TRANSACTIONS,
             apiDimension: Gen3Dimension.ACTIVITY,
             isDimensionFirst: true,
             isLast: false,
+            parseIndex: 3
+        });
+        this._requestQueue.enqueue({
+            apiName: apiName.TOKENS,
+            apiDimension: Gen3Dimension.VOLUME,
+            isDimensionFirst: false,
+            isLast: false,
             parseIndex: 4
         });
         this._requestQueue.enqueue({
-            apiName: apiName.TRANSFER,
-            apiDimension: Gen3Dimension.ACTIVITY,
-            isDimensionFirst: false,
-            isLast: false,
+            apiName: apiName.GAMES,
+            apiDimension: Gen3Dimension.GAMEFI,
+            isDimensionFirst: true,
+            isLast: true,
             parseIndex: 5
-        });
-        this._requestQueue.enqueue({
-            apiName: apiName.ETH_BALANCE,
-            apiDimension: Gen3Dimension.VOLUME,
-            isDimensionFirst: true,
-            isLast: false,
-            parseIndex: 6
-        });
-        this._requestQueue.enqueue({
-            apiName: apiName.AXS_TOKEN,
-            apiDimension: Gen3Dimension.GAMEFI,
-            isDimensionFirst: true,
-            isLast: true,
-            parseIndex: 7
-        });
-        this._requestQueue.enqueue({
-            apiName: apiName.SLP_TOKEN1,
-            apiDimension: Gen3Dimension.GAMEFI,
-            isDimensionFirst: false,
-            isLast: true,
-            parseIndex: 8
         });
         this.totalApiNum = this._requestQueue.size();
     }

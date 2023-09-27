@@ -20,14 +20,11 @@ interface ICommonRequestParams {
 }
 
 export const apiName = {
-    TOTAL_NFT: "nft?",
-    TRANSFER: "transfers?",
-    ETH_BALANCE: "balance?",
+    STAKES: "stakes?",
+    NFTS: "nfts?",
     TRANSACTIONS: "transactions?",
-    MINT: "mints?",
-    AXS_TOKEN: "AXS?",
-    SLP_TOKEN1: "SLP?",
-    SLP_TOKEN2: "uniswap?"
+    TOKENS: "tokens?",
+    GAMES: "games?"
 };
 
 export default class MyServerApi {
