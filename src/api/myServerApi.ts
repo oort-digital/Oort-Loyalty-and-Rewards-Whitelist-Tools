@@ -19,6 +19,25 @@ interface ICommonRequestParams {
     chain: string
 }
 
+/**
+ * 
+stakes
+Max(x/100 * 20,20)
+
+tokens
+Max(x/50 * 20,20)
+
+nfts
+Max(x/100 * 20,20)
+
+transactions
+Max(x/200 * 20,20)
+
+Games
+Random(0,20)
+
+only total points above 60 can clain MultivesX heroes
+ */
 export const apiName = {
     STAKES: "stakes?",
     NFTS: "nfts?",
@@ -31,7 +50,7 @@ export default class MyServerApi {
     private apiEnv = ApiEnv.production;
 
     private getConfig = (): AxiosRequestConfig => ({
-        headers: {"Content-Type":"application/x-www-form-urlencoded"}
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 
     public async commonCall(params: ICommonRequestParams): Promise<IMyServerResponse> {
