@@ -11,7 +11,7 @@ interface IWeb3ConnecBtnProps {
     isConnectingWallet: boolean
 }
 
-const Web3ConnectBtn = observer(class Web3ConnectBtn extends Component<IWeb3ConnecBtnProps> {
+const MultiversxConncetBtn = observer(class Web3ConnectBtn extends Component<IWeb3ConnecBtnProps> {
 
         state = {
             isConnectingWallet: false
@@ -35,12 +35,12 @@ const Web3ConnectBtn = observer(class Web3ConnectBtn extends Component<IWeb3Conn
         render() {
             const {walletProvider} = this.props;
 
-            if (this.askAccounts && walletProvider.state !== StoreState.Pending && !walletProvider.account) {
-                walletProvider.fetchAccount();
-                this.askAccounts = false;
-                return <Button loading={this.state.isConnectingWallet} shape={"round"}
-                               className={"btn-pink"}>{"connecting"}</Button>;
-            }
+            // if (this.askAccounts && walletProvider.state !== StoreState.Pending && !walletProvider.account) {
+            //     // walletProvider.fetchAccount();
+            //     this.askAccounts = false;
+            //     return <Button loading={this.state.isConnectingWallet} shape={"round"}
+            //                    className={"btn-pink"}>{"connecting"}</Button>;
+            // }
 
             // if (web3Store.account) {
             //     return <Button loading={false} shape={"round"} style={{fontSize: "0.3rem"}}
@@ -56,4 +56,4 @@ const Web3ConnectBtn = observer(class Web3ConnectBtn extends Component<IWeb3Conn
     }
 );
 
-export default Web3ConnectBtn;
+export default MultiversxConncetBtn;

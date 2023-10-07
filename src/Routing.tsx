@@ -45,6 +45,7 @@ class Routing extends React.Component<IRoutingProps, IRoutingState> {
     const { rootStore } = this.props;
     const { Content, Sider } = Layout;
     const { isCollapsed } = this.state;
+    const { multiversProvider } = rootStore;
     return (
       <Router>
         <Layout style={{ height: "100vh" }}>
@@ -55,7 +56,7 @@ class Routing extends React.Component<IRoutingProps, IRoutingState> {
             />
           </Sider>
           <Layout className="content-container">
-            <NavHeader web3Store={rootStore.web3Store} />
+            <NavHeader provider={multiversProvider} />
             <Content>
               <Switch>
                 {routes.map((route, index) => {
@@ -68,6 +69,7 @@ class Routing extends React.Component<IRoutingProps, IRoutingState> {
                         render={() => (
                           <FirstPage
                             web3Store={rootStore.web3Store}
+                            multiverxProvider={rootStore.multiversProvider}
                             gen3PhaseProvider={rootStore.gen3PhaseProvider}
                           />
                         )}
@@ -80,6 +82,7 @@ class Routing extends React.Component<IRoutingProps, IRoutingState> {
                         path={route.path}
                         render={() => (
                           <route.component
+                            multiverxProvider={rootStore.multiversProvider}
                             web3Store={rootStore.web3Store}
                             gen3PhaseProvider={rootStore.gen3PhaseProvider}
                           />

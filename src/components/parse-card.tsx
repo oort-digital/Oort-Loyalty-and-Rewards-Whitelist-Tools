@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import ethIcon from "../images/icons/ETH.svg";
-import bnbIcon from "../images/icons/BNB.svg";
-import polygonIcon from "../images/icons/Polygon.svg";
 import checkIcon from "../images/icons/check.svg";
+import multiversIcon from "../images/icons/multiversX.svg";
 // test code
 import { observer } from "mobx-react";
 import {
@@ -11,7 +9,6 @@ import {
   IParseResultItem,
 } from "../data/gene3ParseProvider";
 import { Web3Store } from "../stores/web3-store";
-
 
 interface ParseProps {
   gen3ParseProvider: Gene3ParseProvider;
@@ -33,32 +30,14 @@ const ParseCard = observer(
 
     private parseList: any[] = [
       {
-        name: "eth",
-        className: "bg-eth",
-        img: ethIcon,
+        name: 'multivers x',
+        className: 'bg-multivers',
+        img: multiversIcon,
         showData: false,
         parsing: false,
         data: 0,
-        progress: 0,
-      },
-      {
-        name: "bnb",
-        className: "bg-bnb",
-        img: bnbIcon,
-        showData: false,
-        parsing: false,
-        data: 0,
-        progress: 0,
-      },
-      {
-        name: "polygon",
-        className: "bg-polygon",
-        img: polygonIcon,
-        showData: false,
-        parsing: false,
-        data: 0,
-        progress: 0,
-      },
+        progress: 0
+      }
     ];
 
     renderParseList() {
@@ -100,7 +79,7 @@ const ParseCard = observer(
 
     renderScrollBars() {
       const { gen3ParseProvider } = this.props;
-
+      
       return  <div>
         {gen3ParseProvider.responseData.map(
           (parseResult: IParseResult, index: number) => (

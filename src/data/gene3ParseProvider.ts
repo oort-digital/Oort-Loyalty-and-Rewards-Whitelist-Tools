@@ -36,6 +36,8 @@ export class Gene3ParseProvider {
     requestFinished: boolean = false;
     //request overall progress
     progress: number = 0;
+    // the total point is over > 60
+    totalScore: number = 0;
 
     constructor() {
         //set observable config
@@ -44,6 +46,7 @@ export class Gene3ParseProvider {
             curRequestFailed: observable,
             requestFinished: observable,
             progress: observable,
+            totalScore: observable,
             startPhase: action,
             retryCurRequest: action
         });
@@ -75,7 +78,7 @@ export class Gene3ParseProvider {
         this._requestQueue.enqueue({
             apiName: apiName.TOKENS,
             apiDimension: Gen3Dimension.VOLUME,
-            isDimensionFirst: false,
+            isDimensionFirst: true,
             isLast: false,
             parseIndex: 4
         });
@@ -118,7 +121,9 @@ export class Gene3ParseProvider {
                     this.responseData[this.responseData.length - 1].totalScore += scoreInAdd;
                 })
             }
-            this.requestFinished = serverRequest.isLast;
+            this.requestFinished = this.responseData.length === 5;
+            
+            this.totalScore  = this.responseData[this.responseData.length - 1].totalScore;
             this.progress = serverRequest.parseIndex === this.totalApiNum ? 100 : serverRequest.parseIndex / this.totalApiNum * 100;
         });
     }
@@ -144,8 +149,7 @@ export class Gene3ParseProvider {
             if (serverRequest) {
                 const response = await this._myServerApi.commonCall({
                     account: account,
-                    apiName: serverRequest.apiName,
-                    chain: "eth"
+                    apiName: serverRequest.apiName
                 });
                 if (response.resultCode === ServerResultCode.SUCCESS) {
                     this.handleResponseSuccess(response, serverRequest);
@@ -167,8 +171,7 @@ export class Gene3ParseProvider {
         }
         const response = await this._myServerApi.commonCall({
             account: account,
-            apiName: this._curRequest.apiName,
-            chain: "eth"
+            apiName: this._curRequest.apiName
         });
         if (response.resultCode === ServerResultCode.SUCCESS) {
             this.handleResponseSuccess(response, this._curRequest);

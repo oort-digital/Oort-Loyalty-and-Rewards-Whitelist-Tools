@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
-import logo from "../images/logo@2x.png";
+import logo from "../images/oort_digital_logo.png";
 import routes from "../router-config";
 import collapseIcon from "../images/icons/collapse.svg";
 interface SideProps {
@@ -27,11 +27,11 @@ class SideMenu extends React.Component<SideProps>{
         {routes.map((route, index) => (
           <Menu.Item key={index}>
 
-            <Link to={route.path}><span className="icon-container"><img
+            <a href={route.path}><span className="icon-container"><img
               className="nav-icon"
               src={require(`../images/icons/${route.icon}`)}
               alt=""
-            /></span><span className="menu-name">{route.pathName}</span></Link>
+            /></span><span className="menu-name">{route.pathName}</span></a>
           </Menu.Item>
         ))}
         <button className="collapse-btn" onClick={this.handleClick}>

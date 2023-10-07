@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-import { Web3Store } from "../stores/web3-store";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { observer } from "mobx-react";
-import ethIcon from "../images/icons/ETH.svg";
-import bnbIcon from "../images/icons/BNB.png";
-import polygonIcon from "../images/icons/Polygon.svg";
-import leftIcon from "../images/icons/left.png";
 import ReactEcharts from 'echarts-for-react';
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import Modal from "antd/es/modal";
 import { Gene3ParseProvider } from "../data/gene3ParseProvider";
 import { Gen3Dimension, LoadingState } from "../utils/contranst";
-import { ChainId } from "../utils/contractUtils";
+import { MultiversxWallet } from '../stores/multiversx-wallet';
 
 
 interface CardProps {
-    web3Store: Web3Store,
-    gen3ParseProvider: Gene3ParseProvider;
+    multiverxProvider: MultiversxWallet
+    gen3ParseProvider: Gene3ParseProvider
 }
 
 interface CardStates {
     activeCard: number
+    opened: boolean
 }
 
 @observer
@@ -29,8 +26,10 @@ class ChartCard extends Component<CardProps, CardStates> {
     constructor(props: CardProps, state: CardStates) {
         super(props);
         this.state = {
-            activeCard: 0
+            activeCard: 0,
+            opened: false
         }
+        this.onOk = this.onOk.bind(this);
     }
 
     switchCard = (key: number) => {
@@ -62,30 +61,24 @@ class ChartCard extends Component<CardProps, CardStates> {
     };
 
     getData = () => {
-        const { gen3ParseProvider, web3Store } = this.props;
-        if (web3Store && !web3Store.account) {
+        const { gen3ParseProvider,  multiverxProvider } = this.props;
+        if (multiverxProvider && !multiverxProvider.account) {
             Modal.warn({
-                content: `Please connect MataMask first.`
+                content: `Please connect multiverx wallet first.`
             });
             return;
         }
-        if (web3Store.chainId !== ChainId) {
-            Modal.warn({
-                title: 'Wrong Network',
-                content: `Please connect to the appropriate ETH network.`
-            });
-            return;
-        }
+        
         if (gen3ParseProvider.curRequestFailed) {
             this.loadingSate = LoadingState.retry;
             this.setState({}, () => {
-                gen3ParseProvider.retryCurRequest(web3Store.account);
+                gen3ParseProvider.retryCurRequest(multiverxProvider.account);
             });
             return;
         }
         this.loadingSate = LoadingState.parseStarted;
         this.setState({}, () => {
-            gen3ParseProvider.startPhase(web3Store.account);
+            gen3ParseProvider.startPhase(multiverxProvider.account);
         });
     };
 
@@ -109,6 +102,20 @@ class ChartCard extends Component<CardProps, CardStates> {
         } else if (gen3ParseProvider.requestFinished) {
             text = "Done";
             this.loadingSate = LoadingState.finished;
+            let totalScore = 0;
+        gen3ParseProvider.responseData.forEach((parseResult, index) => {
+            totalScore += parseResult.totalScore;
+        });
+        if (totalScore >= 60) {
+            Modal.info({
+                title: "Please fill in your Mumbai wallet address,we will  send a hero in MultiversX clan to you soon",
+                content : <Input className="contacts-search" placeholder="Input the Mumbai wallet address" allowClear onPressEnter={(e)=>{this.inputTheWallet(e)}}  />,
+                onOk: close => {
+                    close();
+                },
+                okText: "I Get it!"
+            })
+        }
         }
 
         const isLoading = this.loadingSate === LoadingState.parseStarted ||
@@ -129,6 +136,29 @@ class ChartCard extends Component<CardProps, CardStates> {
         </Button>;
     };
 
+    onOk = () => {
+       this.setState({
+        opened: false
+       })
+    };
+
+    inputTheWallet = (e:any)=>{
+        console.log(e.target.value)
+      };
+    renderClaimHeroModal = () => {
+        return <Modal
+        style={{width:"450px", background: "#1b1940"}}
+            title="Please fill in your Mumbai wallet address,we will  send a hero in MultiversX clan to you soon"
+            // eslint-disable-next-line no-restricted-globals
+            open={this.state.opened}
+            onOk={() => this.onOk}
+            onCancel={() => {this.setState({
+                opened: false
+            })}}>
+                    <Input className="contacts-search" placeholder="Input the Mumbai wallet address" allowClear onPressEnter={(e)=>{this.inputTheWallet(e)}}  />
+        </Modal>
+    };
+
     getOption = () => {
         const { gen3ParseProvider } = this.props;
         //逆时针
@@ -136,36 +166,36 @@ class ChartCard extends Component<CardProps, CardStates> {
         gen3ParseProvider.responseData.forEach((parseResult, index) => {
             switch (parseResult.dimension) {
                 case Gen3Dimension.DEFI:
-                    if (parseResult.totalScore > 100) {
-                        graphData[0][0] = 100;
+                    if (parseResult.totalScore > 20) {
+                        graphData[0][0] = 20;
                     } else {
                         graphData[0][0] = parseResult.totalScore;
                     }
                     break;
                 case Gen3Dimension.NFT:
-                    if (parseResult.totalScore > 100) {
-                        graphData[0][0] = 100;
+                    if (parseResult.totalScore > 20) {
+                        graphData[0][0] = 20;
                     } else {
                         graphData[0][1] = parseResult.totalScore;
                     }
                     break;
                 case Gen3Dimension.ACTIVITY:
-                    if (parseResult.totalScore > 100) {
-                        graphData[0][0] = 100;
+                    if (parseResult.totalScore > 20) {
+                        graphData[0][0] = 20;
                     } else {
                         graphData[0][2] = parseResult.totalScore;
                     }
                     break;
                 case Gen3Dimension.VOLUME:
-                    if (parseResult.totalScore > 100) {
-                        graphData[0][0] = 100;
+                    if (parseResult.totalScore > 20) {
+                        graphData[0][0] = 20;
                     } else {
                         graphData[0][3] = parseResult.totalScore;
                     }
                     break;
                 case Gen3Dimension.GAMEFI:
-                    if (parseResult.totalScore > 100) {
-                        graphData[0][0] = 100;
+                    if (parseResult.totalScore > 20) {
+                        graphData[0][0] = 20;
                     } else {
                         graphData[0][4] = parseResult.totalScore;
                     }
@@ -188,11 +218,11 @@ class ChartCard extends Component<CardProps, CardStates> {
         let option = {
             radar: {
                 indicator: [
-                    { name: Gen3Dimension.DEFI, max: 100 },
-                    { name: Gen3Dimension.NFT, max: 100 },
-                    { name: Gen3Dimension.ACTIVITY, max: 100 },
-                    { name: Gen3Dimension.VOLUME, max: 100 },
-                    { name: Gen3Dimension.GAMEFI, max: 100 },
+                    { name: Gen3Dimension.DEFI, max: 20 },
+                    { name: Gen3Dimension.NFT, max: 20 },
+                    { name: Gen3Dimension.ACTIVITY, max: 20 },
+                    { name: Gen3Dimension.VOLUME, max: 20 },
+                    { name: Gen3Dimension.GAMEFI, max: 20 },
                 ],
                 splitLine: {
                     show: true,
@@ -239,19 +269,19 @@ class ChartCard extends Component<CardProps, CardStates> {
         return option;
     };
 
-    renderLeftIcon = () => {
-        const i = this.state.activeCard;
-        const icons = [{ name: "eth", icon: ethIcon }, { name: "bnb", icon: bnbIcon }, { name: "eth", icon: polygonIcon }]
-        return <div className={`left-icon bg-${icons[i].name}`}>
-            <img src={icons[i].icon} alt="" className={icons[i].name} />
-        </div>
-    };
+    // renderLeftIcon = () => {
+    //     const i = this.state.activeCard;
+    //     const icons = [{ name: "eth", icon: ethIcon }, { name: "bnb", icon: bnbIcon }, { name: "eth", icon: polygonIcon }]
+    //     return <div className={`left-icon bg-${icons[i].name}`}>
+    //         <img src={icons[i].icon} alt="" className={icons[i].name} />
+    //     </div>
+    // };
 
     render() {
-        // const {web3Store} = this.props;
-        const { activeCard } = this.state;
+        
+
         return <div className='chart-card'>
-            <div className={`switch-btn switch-eth bg-eth  ${activeCard === 0 ? "active" : ""}`} onClick={() => {
+            {/* <div className={`switch-btn switch-eth bg-eth  ${activeCard === 0 ? "active" : ""}`} onClick={() => {
                 this.switchCard(0)
             }}><img src={ethIcon} alt="" className="eth" />ETH
             </div>
@@ -267,15 +297,16 @@ class ChartCard extends Component<CardProps, CardStates> {
             }}><img src={leftIcon} alt="" /></div>
             <div className="btn-right text-center" onClick={() => {
                 this.switchCardByNum(1)
-            }}><img src={leftIcon} alt="" /></div>
+            }}><img src={leftIcon} alt="" /></div> */}
             <div className='bg-card-gray chart-container'>
-                {this.renderLeftIcon()}
+                {/* {this.renderLeftIcon()} */}
                 <div style={{ paddingTop: "20px" }} className="text-center">
                     <ReactEcharts
                         option={this.getOption()}
                         style={{ width: '400px', height: '280px', top: "20px" }}
                         className='chart-content' />
                     {this.renderParseBtn()}
+                    {/* {this.renderClaimHeroModal()} */}
                 </div>
             </div>
         </div>

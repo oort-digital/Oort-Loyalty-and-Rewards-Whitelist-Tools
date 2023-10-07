@@ -17,6 +17,7 @@ import { simplifyAccount } from "../utils/contractUtils";
 import check1 from "../images/icons/check1.svg";
 import deleteIcon from "../images/icons/delete.svg";
 import bgTip from "../images/msg-tip.png"
+import { MultiversxWallet } from "../stores/multiversx-wallet";
 // import { autoAction } from "mobx/dist/internal";
 
 
@@ -25,6 +26,7 @@ const { Scrollbars } = require('react-custom-scrollbars');
 
 interface IFirstPageProps {
   web3Store: Web3Store;
+  multiverxProvider: MultiversxWallet;
   gen3PhaseProvider: Gene3ParseProvider;
 }
 
@@ -55,14 +57,14 @@ class FirstPage extends Component<IFirstPageProps, IFirstPageState> {
     console.log(val)
   }
 
-  componentDidMount() {
-    Modal.info({
-      content: 'Click Analyze on the right to start the test'
-    });
-  }
+  // componentDidMount() {
+  //   Modal.info({
+  //     content: 'Click Analyze on the right to start the test'
+  //   });
+  // }
 
   render() {
-    const { web3Store, gen3PhaseProvider } = this.props;
+    const { web3Store, gen3PhaseProvider, multiverxProvider } = this.props;
     const { followed } = this.state;
     const { TabPane } = Tabs;
 
@@ -173,7 +175,7 @@ class FirstPage extends Component<IFirstPageProps, IFirstPageState> {
 
         <div className="content-right">
           <Scrollbars style={{ height: "100%", width: "100%" }} >
-            <ChartCard web3Store={web3Store} gen3ParseProvider={gen3PhaseProvider} />
+            <ChartCard multiverxProvider={multiverxProvider} gen3ParseProvider={gen3PhaseProvider} />
             <SuggestUserList web3Store={web3Store} />
           </Scrollbars>
 
